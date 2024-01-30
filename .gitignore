@@ -1,2 +1,6 @@
 *.pyc
 *.egg-info
+Inferlightegg-info
+build
+dist
+data

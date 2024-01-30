@@ -33,3 +33,11 @@ Time per request:       128.620 [ms] (mean)
 Time per request:       4.019 [ms] (mean, across all concurrent requests)
 Transfer rate:          49.32 [Kbytes/sec] received
 ```
+
+
+
+| 模型 | 显存 | 利用率 | QPS |  
+| --- | --- | --- | --- |  
+| flask-bert | 2349M | 28% |  45 | 
+| fastapi-bert | 1395M | 40% | 96  |  
+| inferlight | 2785M | 40% | 756  |  

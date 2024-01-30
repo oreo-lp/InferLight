@@ -9,6 +9,7 @@ from cachetools import TTLCache
 
 from .data import InferStatus, InferResponse
 
+# mp.set_start_method("spawn", force= True)
 
 class LightWrapper:
 
