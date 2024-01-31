@@ -97,8 +97,8 @@ if __name__=='__main__':
         response = await wrapped_model.predict(dummy_input)
         if not response.succeed():
             return {'output':None, 'status':'failed'}
-        result = {'output': response.result}
-        print("result = {}".format(result))
+        # result = {'input':str(dummy_input),'output': response.result}
+        result = {"status":"success"}
         return result
 
     uvicorn.run(app, host="0.0.0.0", port=8000)

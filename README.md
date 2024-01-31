@@ -32,6 +32,8 @@ Requests per second:    248.79 [#/sec] (mean)
 Time per request:       128.620 [ms] (mean)
 Time per request:       4.019 [ms] (mean, across all concurrent requests)
 Transfer rate:          49.32 [Kbytes/sec] received
+# 上面的Failed requests主要问题的Length导致的，这个是因为网页都动态的，返回的response大小不一致，所以是Failed。  
+这个可以忽略
 ```
 
 
