@@ -19,6 +19,7 @@ class LightWrapper:
         self.logger = logging.getLogger('InferLight-Wrapper')
         self.logger.setLevel(logging.INFO)
 
+        # 结果缓存对象，用于缓存模型推理的结果
         self.result_cache = TTLCache(maxsize=10000, ttl=5)
 
         self.mp = mp.get_context('spawn')
@@ -28,6 +29,7 @@ class LightWrapper:
         # setup worker
         self.logger.info('Starting worker...')
         worker_ready_event = self.mp.Event()
+        # 开辟多线程进行模型的推理
         self._worker_p = self.mp.Process(target=worker_class.start, args=(
             self.data_queue, self.result_queue, model_args, batch_size, max_delay, worker_ready_event
         ), daemon=True)
@@ -38,6 +40,7 @@ class LightWrapper:
         else:
             self.logger.error('Failed to start worker!')
 
+        # 推理结果收集线程
         self.back_thread = threading.Thread(
             target=self._collect_result, name="thread_collect_result")
         self.back_thread.daemon = True
@@ -55,6 +58,7 @@ class LightWrapper:
                 self.result_cache[task_id] = result
 
     async def get_result(self, task_id):
+        # 直到有推理结果的时候才返回，不然就卡死
         while task_id not in self.result_cache:
             await asyncio.sleep(0.01)
         return self.result_cache[task_id]

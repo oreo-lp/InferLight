@@ -38,14 +38,16 @@ class MyWorker(BaseInferLightWorker):
         
         self.tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
         self.device = torch.device('cuda' if model_args.get('use_cuda') else 'cpu')
-        return
 
     def build_batch(self, requests):
+        # encoded_input type = {}
+        # input_ids, token_type_ids, attention_mask
         encoded_input = self.tokenizer.batch_encode_plus(requests, 
                                                          return_tensors='pt',
                                                          padding=True,
                                                          truncation=True,
                                                          max_length=512)
+        print("encoded_input.shape = {}".format(encoded_input["input_ids"].shape))
         return encoded_input.to(self.device)
 
     @torch.no_grad()
@@ -71,7 +73,7 @@ if __name__=='__main__':
     bert_model = bert_model.to(device)
     bert_model.eval()
 
-    wrapped_model = LightWrapper(MyWorker, config, batch_size=4, max_delay=0.05)
+    wrapped_model = LightWrapper(MyWorker, config, batch_size=10, max_delay=0.05)
 
     app = FastAPI()
 
@@ -97,6 +99,6 @@ if __name__=='__main__':
             return {'output':None, 'status':'failed'}
         result = {'output': response.result}
         print("result = {}".format(result))
-        return {'output': response.result}
+        return result
 
     uvicorn.run(app, host="0.0.0.0", port=8000)

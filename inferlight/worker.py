@@ -9,7 +9,6 @@ from queue import Empty
 # 2. batch inference 
 # 3. write results into result queue
 class BaseInferLightWorker:
-
     def __init__(self, data_queue:mp.Queue, result_queue:mp.Queue, 
                  model_args:dict, 
                  batch_size=16, max_delay=0.1,
@@ -22,7 +21,8 @@ class BaseInferLightWorker:
         self.logger.setLevel(logging.DEBUG)
 
         self.load_model(model_args)
-
+        
+        # 通知主进程，模型加载完成
         if ready_event:
             ready_event.set()
 
@@ -41,6 +41,8 @@ class BaseInferLightWorker:
                     pass
                 if time.time()-since>=self.max_delay:
                     break
+
+            # 对批量数据进行处理
             if len(data)>0:
                 start = time.perf_counter()
                 batch = self.build_batch(data)
