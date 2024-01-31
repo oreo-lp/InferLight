@@ -31,7 +31,7 @@ class BertModel(nn.Module):
     def forward(self, inputs):
         return self.bert(**inputs).logits
 
-class MyWorker(BaseInferLightWorker):
+class BertWorker(BaseInferLightWorker):
 
     def load_model(self, model_args):
         self.model = BertModel(model_args)
@@ -47,7 +47,6 @@ class MyWorker(BaseInferLightWorker):
                                                          padding=True,
                                                          truncation=True,
                                                          max_length=512)
-        print("encoded_input.shape = {}".format(encoded_input["input_ids"].shape))
         return encoded_input.to(self.device)
 
     @torch.no_grad()
@@ -73,7 +72,7 @@ if __name__=='__main__':
     bert_model = bert_model.to(device)
     bert_model.eval()
 
-    wrapped_model = LightWrapper(MyWorker, config, batch_size=4, max_delay=0.05)
+    wrapped_model = LightWrapper(BertWorker, config, batch_size=1, max_delay=0.05)
 
     app = FastAPI()
 

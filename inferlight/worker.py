@@ -46,10 +46,13 @@ class BaseInferLightWorker:
             if len(data)>0:
                 start = time.perf_counter()
                 batch = self.build_batch(data)
+                start_token = time.perf_counter()
                 results = self.inference(batch)
                 end = time.perf_counter()
-                time_elapsed = (end-start)*1000
-                self.logger.info(f'inference succeeded. batch size: {len(data)}, time elapsed: {time_elapsed:.3f} ms')
+                token_time_elapsed = (start_token - start)*1000
+                infer_time_elapsed = (end - start_token)*1000
+                self.logger.info(f'tokenize succeeded. batch size: {len(data)}, time elapsed: {token_time_elapsed:.3f} ms')
+                self.logger.info(f'inference succeeded. batch size: {len(data)}, time elapsed: {infer_time_elapsed:.3f} ms')
                 for (task_id, result) in zip(task_ids, results):
                     self.result_queue.put((task_id, result))
 

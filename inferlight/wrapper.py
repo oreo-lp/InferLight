@@ -20,11 +20,11 @@ class LightWrapper:
         self.logger.setLevel(logging.INFO)
 
         # 结果缓存对象，用于缓存模型推理的结果
-        self.result_cache = TTLCache(maxsize=10000, ttl=5)
+        self.result_cache = TTLCache(maxsize=10000, ttl=5)  # 过去时间为5s
 
         self.mp = mp.get_context('spawn')
-        self.result_queue = self.mp.Queue()
         self.data_queue = self.mp.Queue()
+        self.result_queue = self.mp.Queue()
 
         # setup worker
         self.logger.info('Starting worker...')
@@ -46,6 +46,8 @@ class LightWrapper:
         self.back_thread.daemon = True
         self.back_thread.start()
 
+    # 将数据保存到缓存中，一旦缓存中的数据存在时间超过5s
+    # 缓存中的数据就会被清空
     def _collect_result(self):
         self.logger.info('Result collecting thread started!')
         while True:

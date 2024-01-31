@@ -38,12 +38,12 @@ Transfer rate:          49.32 [Kbytes/sec] received
 
 
 
-| 模型 | 显存 | 利用率 | QPS |  
-| --- | --- | --- | --- |  
-| flask-bert | 2349M | 28% |  45 | 
-| fastapi-bert | 1395M | 40% | 96  |  
-| inferlight-bs1 | 2711M | 40% | 101  | 
-| inferlight-bs2 | 2711M | 40% | 207  | 
-| inferlight-bs4 | 2711M | 40% | 396  |   
-| inferlight-bs8 | 2711M | 40% | 659  |  
-| inferlight-bs16 | 2711M | 40% | 756  |  
+| 模型 | 显存 | GPU利用率 | 内存 | CPU利用率 | QPS |  
+| :--- | :---: | :---: | :---: |  :---: | :---: |  
+| flask-bert | 2349M | 28% | 2.9G | 218% |  45 |    
+| fastapi-bert | 1395M | 40% | 2.6G | 100% | 96 |  
+| inferlight-bs1 | 2711M | 40% | 5.2G | 121% |  101  | 
+| inferlight-bs2 | 2711M | 40% | 5.2G | 137% | 207  | 
+| inferlight-bs4 | 2711M | 40% | 5.2G | 152% | 396  |   
+| inferlight-bs8 | 2711M | 40% | 5.2G | 180% | 659  |  
+| inferlight-bs16 | 2711M | 40% | 5.2G | 220% | 756  |  
