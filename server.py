@@ -73,7 +73,7 @@ if __name__=='__main__':
     bert_model = bert_model.to(device)
     bert_model.eval()
 
-    wrapped_model = LightWrapper(MyWorker, config, batch_size=10, max_delay=0.05)
+    wrapped_model = LightWrapper(MyWorker, config, batch_size=4, max_delay=0.05)
 
     app = FastAPI()
 
